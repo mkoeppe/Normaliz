@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
     }
 
     if (!options.isUseLongLong()) {
-        process_data<mpq_class>(options, command_line);
+        process_data<renf_elem_class>(options, command_line);
     }
     // the previous process_data might return unsuccessfully if the input file specifies to use long long
 

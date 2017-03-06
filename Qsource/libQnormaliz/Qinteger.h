@@ -26,6 +26,8 @@
 
 #include <libQnormaliz/Qgeneral.h>
 
+#include <renfxx.h>
+
 #include <list>
 #include <vector>
 #include <string>
