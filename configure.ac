@@ -183,4 +183,40 @@ AC_SUBST(COCOA_LIBS)
 AC_SUBST(COCOA_CPPFLAGS)
 AM_CONDITIONAL(NMZ_INTEGRATE, test x$enable_nmzintegrate = xyes)
 
+### Test whether to build e-antic based real algebraic Qnormaliz
+AC_ARG_WITH([flint],
+   AS_HELP_STRING([--with-flint=DIR],
+      [provide location of FLINT installation prefix]),
+   [ LDFLAGS="-L$with_flint/lib $LDFLAGS"
+     CPPFLAGS="-I $with_flint/include $CPPFLAGS"
+   ])
+AC_ARG_WITH([e-antic],
+   AS_HELP_STRING([--with-e-antic=DIR],
+      [provide location of e-antic installation prefix]),
+   [ LDFLAGS="-L$with_e_antic/lib $LDFLAGS"
+     CPPFLAGS="-I $with_e_antic/include $CPPFLAGS"
+   ])
+AC_ARG_ENABLE([enfnormaliz],
+    [AS_HELP_STRING([--enable-enfnormaliz@<:@=ARG@:>@],
+      [enable ENFnormaliz (requires e-antic) @<:@default=check@:>@])],
+    [:],
+    [enable_enfnormaliz=check])
+AS_IF([test "x$enable_enfnormaliz" != xno],
+    [AC_MSG_CHECKING([whether e-antic headers and library are available])
+     E_ANTIC_LIBS="-lnfemb -lflint -lgmpxx -lgmp"
+     LIBS_SAVED="$LIBS"
+     LIBS="$LIBS $E_ANTIC_LIBS"
+     AC_LINK_IFELSE(
+       [AC_LANG_PROGRAM([[#include <e-antic/renfxx.h>
+                         ]],
+                        [[renf_elem_class f;
+                         ]])],
+       [have_e_antic=yes],
+       [have_e_antic=no])
+     AC_MSG_RESULT($have_e_antic)
+     LIBS="$LIBS_SAVED"
+    ])
+AC_SUBST(E_ANTIC_LIBS)
+AM_CONDITIONAL(ENFNORMALIZ_INTEGRATE, test x$enable_enfnormaliz = xyes)
+
 AC_OUTPUT

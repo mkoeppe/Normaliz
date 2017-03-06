@@ -2,8 +2,8 @@ AUTOMAKE_OPTIONS = subdir-objects
 
 EXTRA_DIST =
 
-AM_CXXFLAGS = -I $(HOME)/AN/e-antic -I $(HOME)/FFF/dest/include
-AM_LDFLAGS = -L$(HOME)/AN/e-antic -L$(HOME)/FFF/dest/lib
+AM_CXXFLAGS =
+AM_LDFLAGS =
 
 if ENABLE_OPENMP
 AM_CXXFLAGS += $(OPENMP_CXXFLAGS)
