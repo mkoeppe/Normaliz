@@ -211,12 +211,14 @@ AS_IF([test "x$enable_enfnormaliz" != xno],
                          ]],
                         [[renf_elem_class f;
                          ]])],
-       [have_e_antic=yes],
-       [have_e_antic=no])
+       [have_e_antic=yes; enable_enfnormaliz=yes],
+       [have_e_antic=no; enable_enfnormaliz=no])
      AC_MSG_RESULT($have_e_antic)
      LIBS="$LIBS_SAVED"
     ])
 AC_SUBST(E_ANTIC_LIBS)
-AM_CONDITIONAL(ENFNORMALIZ_INTEGRATE, test x$enable_enfnormaliz = xyes)
+AM_CONDITIONAL(ENFNORMALIZ, test x$enable_enfnormaliz = xyes)
+AS_IF([test x$enable_enfnormaliz = xyes],
+  [AC_DEFINE(ENFNORMALIZ)])
 
 AC_OUTPUT

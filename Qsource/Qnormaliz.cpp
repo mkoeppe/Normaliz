@@ -124,10 +124,12 @@ int main(int argc, char* argv[])
         printHeader();
     }
 
-    if (!options.isUseLongLong()) {
+    try {
+        process_data<mpq_class>(options, command_line);
+    } catch (const FatalException& e) {
+      // input file specifies a number field
         process_data<renf_elem_class>(options, command_line);
     }
-    // the previous process_data might return unsuccessfully if the input file specifies to use long long
 
 }
 

@@ -26,7 +26,9 @@
 
 #include <libQnormaliz/Qgeneral.h>
 
+#ifdef ENFNORMALIZ
 #include <e-antic/renfxx.h>
+#endif
 
 #include <list>
 #include <vector>

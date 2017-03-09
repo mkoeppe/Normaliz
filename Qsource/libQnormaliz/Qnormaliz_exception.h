@@ -121,6 +121,14 @@ class FatalException: public NormalizException {
 };
 
 
+class NumberFieldInputException: public NormalizException {
+    public:
+	virtual const char* what() const throw() {
+		return "Input requested number field.";
+	}
+};
+
+
 } /* end namespace */
 
 #endif /* LIBNORMALIZ_H_ */

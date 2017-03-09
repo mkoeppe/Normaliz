@@ -14,7 +14,9 @@ AM_LDFLAGS += $(SCIP_LDFLAGS)
 LIBS += $(SCIP_LIBS)
 endif
 LIBS += -lgmpxx -lgmp
+if ENFNORMALIZ
 LIBS += -lnfemb -lflint
+endif
 
 # Installed library, shared and/or static (using libtool).
 lib_LTLIBRARIES = libQnormaliz.la
