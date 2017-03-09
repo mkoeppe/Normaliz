@@ -124,12 +124,17 @@ int main(int argc, char* argv[])
         printHeader();
     }
 
+#ifdef ENFNORMALIZ
     try {
+#endif
         process_data<mpq_class>(options, command_line);
-    } catch (const FatalException& e) {
+#ifdef ENFNORMALIZ
+    }
+    catch (const NumberFieldInputException& e) {
       // input file specifies a number field
         process_data<renf_elem_class>(options, command_line);
     }
+#endif
 
 }
 
