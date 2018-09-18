@@ -34,8 +34,8 @@ echo "Installing MPFR..."
 mkdir -p ${NMZ_OPT_DIR}/MPFR_source/
 cd ${NMZ_OPT_DIR}/MPFR_source
 if [ ! -d mpfr-${MPFR_VERSION} ]; then
-    curl -O http://www.mpfr.org/mpfr-${MPFR_VERSION}/mpfr-${MPFR_VERSION}.tar.gz
-    tar -xvf mpfr-${MPFR_VERSION}.tar.gz
+    curl -O https://www.mpfr.org/mpfr-${MPFR_VERSION}/mpfr-${MPFR_VERSION}.tar.gz
+    tar -xvzf mpfr-${MPFR_VERSION}.tar.gz
 fi
 cd mpfr-${MPFR_VERSION}
 if [ ! -f config.status ]; then
