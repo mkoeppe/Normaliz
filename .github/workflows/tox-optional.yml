@@ -26,8 +26,8 @@ on:
 
 env:
   TARGETS_PRE: build/make/Makefile
-  TARGETS:     build/make/Makefile
-  TARGETS_OPTIONAL: 4ti2 pynormaliz qepcad lrslib latte_int topcom barvinok isl qhull sage_numerical_backends_coin primecount plantri polymake jupymake kenzo libsemigroups mcqd meataxe mpfrcx openssl p_group_cohomology rst2ipynb sirocco tdlib tides
+  TARGETS:     pynormaliz
+  TARGETS_OPTIONAL: build/make/Makefile
 
 jobs:
   docker:
@@ -37,17 +37,19 @@ jobs:
       max-parallel: 6
       matrix:
         tox_system_factor: [ubuntu-trusty, ubuntu-xenial, ubuntu-bionic, ubuntu-eoan, ubuntu-focal, debian-jessie, debian-stretch, debian-buster, debian-bullseye, debian-sid, linuxmint-17, linuxmint-18, linuxmint-19, linuxmint-19.3, fedora-26, fedora-27, fedora-28, fedora-29, fedora-30, fedora-31, centos-7, centos-8, archlinux-latest, slackware-14.2, conda-forge, ubuntu-bionic-i386, ubuntu-eoan-i386, debian-buster-i386, centos-7-i386]
-        tox_packages_factor: [maximal]
+        tox_packages_factor: [minimal, standard]
     env:
       TOX_ENV: docker-${{ matrix.tox_system_factor }}-${{ matrix.tox_packages_factor }}
       LOGS_ARTIFACT_NAME: logs-commit-${{ github.sha }}-tox-docker-${{ matrix.tox_system_factor }}-${{ matrix.tox_packages_factor }}
-      DOCKER_TARGETS: configured with-targets with-targets-optional
+      DOCKER_TARGETS: configured with-targets
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 500
-      - name: fetch tags
-        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          repository: sagemath/sage
+          ref: develop
+      - uses: actions/checkout@v2
+        with:
+          path: build/pkgs/normaliz/src
       - name: free disk space
         run: |
           sudo swapoff -a
@@ -55,6 +57,11 @@ jobs:
           sudo apt clean
           docker rmi $(docker image ls -aq)
           df -h
+      - name: make dist
+        run: |
+          cd build/pkgs/normaliz/src && ./bootstrap && ./configure && make dist
+          cp build/pkgs/normaliz/src/*.tar.gz upstream/normaliz-git.tar.gz
+          ./sage -package update normaliz git --tarball normaliz-git.tar.gz
       - name: Install test prerequisites
         run: |
           sudo DEBIAN_FRONTEND=noninteractive apt-get update
